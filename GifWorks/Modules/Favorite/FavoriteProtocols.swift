@@ -14,12 +14,14 @@ protocol FavoriteConfiguratorProtocol {
 protocol FavoriteViewProtocol: AnyObject {
   var presenter: FavoritePresenterProtocol! { get set }
   func reloadData()
+  func deleteItem(at index: Int)
   func showError()
 }
 
 protocol FavoritePresenterProtocol {
-  func viewDidLoad()
+  func loadFavoriteGifs()
+  func deleteFavorite(with id: String)
   func getGifCount() -> Int
-  func getGif(at row: Int) -> LibraryGifViewModel
+  func getGif(at row: Int) -> FavoriteGifModel
   func getGifHeight(at row: Int) -> Int
 }

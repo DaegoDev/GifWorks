@@ -8,12 +8,13 @@
 import UIKit
 
 class LibraryViewController: UIViewController, LibraryViewProtocol {
-  var presenter: LibraryPresenterProtocol!
-  var configurator: LibraryConfiguratorProtocol = LibraryConfigurator()
-  
   // MARK: - Outlets
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchBar: UISearchBar!
+  
+  // MARK: - Properties
+  var presenter: LibraryPresenterProtocol!
+  var configurator: LibraryConfiguratorProtocol = LibraryConfigurator()
   
   // MARK - LifeCycle
   override func viewDidLoad() {
@@ -21,11 +22,19 @@ class LibraryViewController: UIViewController, LibraryViewProtocol {
     configureTableView()
     searchBar.delegate = self
     configurator.configure(libraryViewController: self)
-    self.presenter.viewDidLoad()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.presenter.loadGifs()
+  }
+  
+  // MARK: - Overrides
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.searchBar.endEditing(true)
   }
   
   // MARK - Functions
-  
   func configureTableView() {
     tableView.delegate = self
     tableView.dataSource = self
@@ -43,6 +52,7 @@ class LibraryViewController: UIViewController, LibraryViewProtocol {
   }
 }
 
+// MARK: - TableView Delegate and Datasource
 extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
@@ -58,6 +68,7 @@ extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
     cell.configure(with: gifModel)
     cell.favoriteCompletion = {
       self.presenter.toggleFavoriteGif(at: indexPath.row)
+      cell.setFavoriteImage(isSelected: self.presenter.getGif(at: indexPath.row).isFavorite)
     }
     return cell
   }
@@ -65,8 +76,13 @@ extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return CGFloat(presenter.getGifHeight(at: indexPath.row))
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    self.searchBar.endEditing(true)
+  }
 }
 
+// MARK: - Searchbar Delegate
 extension LibraryViewController: UISearchBarDelegate {
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     self.presenter.searchGifs(with: searchBar.text ?? "")

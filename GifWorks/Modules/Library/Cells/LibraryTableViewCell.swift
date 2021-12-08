@@ -6,33 +6,39 @@
 //
 
 import UIKit
-import SwiftyGif
 
 class LibraryTableViewCell: UITableViewCell {
-  private let favoriteImageName: String = "heart.fill"
-  private let notFavoriteImageName: String = "heart"
-  
-  private var model: LibraryGifViewModel?
-  var favoriteCompletion: (() -> Void)?
-  
+  // MARK: - IBOutlets
   @IBOutlet weak var favoriteButton: UIButton!
   @IBOutlet weak var gifImageView: UIImageView!
   
-  @IBAction func favoriteButtonTapped(_ sender: UIButton) {
-    favoriteCompletion?()
-    setFavoriteImage(isSelected: !(model?.isFavorite ?? true))
-    model?.isFavorite.toggle()
+  // MARK: - Constants
+  private let favoriteImageName: String = "heart.fill"
+  private let notFavoriteImageName: String = "heart"
+  
+  // MARK: - Properties
+  private var model: LibraryGifModel?
+  var favoriteCompletion: (() -> Void)?
+  
+  // MARK: - Overrides
+  override func prepareForReuse() {
+    gifImageView.image = nil
   }
   
-  func configure(with model: LibraryGifViewModel) {
+  // MARK: - IBActions
+  @IBAction func favoriteButtonTapped(_ sender: UIButton) {
+    favoriteCompletion?()
+  }
+  
+  // MARK: - Functions
+  func configure(with model: LibraryGifModel) {
     guard let gifURL = model.gifURL else { return }
-    let data = NSData(contentsOf: gifURL)
+    gifImageView.loadGif(using: gifURL)
     gifImageView.contentMode = .scaleToFill
-    gifImageView.setGifFromURL(gifURL)
     setFavoriteImage(isSelected: model.isFavorite)
   }
   
   func setFavoriteImage(isSelected: Bool) {
-    favoriteButton.setImage(UIImage(systemName: isSelected ? favoriteImageName : notFavoriteImageName), for: .normal)
+    favoriteButton.setBackgroundImage(UIImage(systemName: isSelected ? favoriteImageName : notFavoriteImageName), for: .normal)
   }
 }

@@ -3,7 +3,6 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -25,16 +24,18 @@
                                 <rect key="frame" x="0.0" y="0.0" width="412" height="272"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TSe-om-sQR">
-                                <rect key="frame" x="364" y="8" width="40" height="40"/>
+                                <rect key="frame" x="364" y="9.5" width="40" height="37.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="TSe-om-sQR" secondAttribute="height" multiplier="1:1" id="51x-X2-XjO"/>
                                     <constraint firstAttribute="width" constant="40" id="9c4-45-jUm"/>
                                 </constraints>
-                                <state key="normal">
+                                <state key="normal" backgroundImage="heart.fill" catalog="system">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <imageReference key="image" image="heart" catalog="system" symbolScale="large"/>
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="bold"/>
                                 </state>
+                                <connections>
+                                    <action selector="favoriteButtonTapped:" destination="VAc-uz-Nzy" eventType="touchUpInside" id="ZRH-aH-zy7"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -57,13 +58,14 @@
             </collectionViewCellContentView>
             <size key="customSize" width="412" height="272"/>
             <connections>
+                <outlet property="favoriteButton" destination="TSe-om-sQR" id="MIm-Nz-g8H"/>
                 <outlet property="gifImageView" destination="LSR-Bf-lce" id="d8Z-Vt-7hL"/>
             </connections>
             <point key="canvasLocation" x="168.11594202898553" y="75.669642857142847"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="heart" catalog="system" width="128" height="109"/>
+        <image name="heart.fill" catalog="system" width="128" height="109"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

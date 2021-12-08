@@ -3,7 +3,6 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,28 +22,25 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ymW-Ng-xoc">
                                 <rect key="frame" x="0.0" y="8" width="544" height="300"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ch0-qC-55o">
-                                <rect key="frame" x="496" y="8" width="40" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCf-oK-fai">
+                                <rect key="frame" x="488" y="17.5" width="40" height="37.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="LAn-6X-OqQ"/>
-                                    <constraint firstAttribute="width" secondItem="ch0-qC-55o" secondAttribute="height" multiplier="1:1" id="vjh-Qa-R8M"/>
+                                    <constraint firstAttribute="width" constant="40" id="FYY-RN-Py6"/>
+                                    <constraint firstAttribute="width" secondItem="QCf-oK-fai" secondAttribute="height" multiplier="1:1" id="UAH-Yf-L2A"/>
                                 </constraints>
-                                <state key="normal">
-                                    <imageReference key="image" image="heart" catalog="system" symbolScale="large"/>
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="bold"/>
-                                </state>
+                                <state key="normal" backgroundImage="heart" catalog="system"/>
                                 <connections>
-                                    <action selector="favoriteButtonTapped:" destination="4cm-hA-njJ" eventType="touchUpInside" id="6vq-iG-3Ff"/>
+                                    <action selector="favoriteButtonTapped:" destination="4cm-hA-njJ" eventType="touchUpInside" id="VrH-Ho-PrY"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="ch0-qC-55o" firstAttribute="top" secondItem="s9I-3u-2VA" secondAttribute="top" constant="8" id="6Tt-5t-WuU"/>
+                            <constraint firstAttribute="trailing" secondItem="QCf-oK-fai" secondAttribute="trailing" constant="16" id="60A-oF-4QP"/>
                             <constraint firstAttribute="trailing" secondItem="ymW-Ng-xoc" secondAttribute="trailing" id="Inr-z0-H7b"/>
                             <constraint firstAttribute="bottom" secondItem="ymW-Ng-xoc" secondAttribute="bottom" constant="8" id="Jqb-et-W7D"/>
                             <constraint firstItem="ymW-Ng-xoc" firstAttribute="leading" secondItem="s9I-3u-2VA" secondAttribute="leading" id="m0v-Yg-ZVG"/>
-                            <constraint firstAttribute="trailing" secondItem="ch0-qC-55o" secondAttribute="trailing" constant="8" id="s1g-92-0JG"/>
+                            <constraint firstItem="QCf-oK-fai" firstAttribute="top" secondItem="s9I-3u-2VA" secondAttribute="top" constant="16" id="rs3-CB-dWE"/>
                             <constraint firstItem="ymW-Ng-xoc" firstAttribute="top" secondItem="s9I-3u-2VA" secondAttribute="top" constant="8" id="sEN-SS-KpC"/>
                         </constraints>
                     </view>
@@ -57,7 +53,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="favoriteButton" destination="ch0-qC-55o" id="eca-0t-4OF"/>
+                <outlet property="favoriteButton" destination="QCf-oK-fai" id="u7c-aA-ptg"/>
                 <outlet property="gifImageView" destination="ymW-Ng-xoc" id="mA6-Kb-bqd"/>
             </connections>
             <point key="canvasLocation" x="-98.550724637681171" y="5.3571428571428568"/>

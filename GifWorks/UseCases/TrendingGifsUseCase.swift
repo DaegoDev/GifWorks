@@ -7,20 +7,41 @@
 
 import Foundation
 
-class TrendingGifsUseCase {
+protocol TrendingGifsUseCaseProtocol {
+  func getTrending(completion: @escaping (Result<[LibraryGifModel], UseCaseError>) -> Void)
+}
+
+class TrendingGifsUseCase: TrendingGifsUseCaseProtocol {
+  // MARK: - Properties
   let networkService: NetworkServiceProtocol
+  let gifsUseCase: GifsUseCaseProtocol
   
-  init(networkService: NetworkServiceProtocol = NetworkService()) {
+  // MARK: - Init
+  init(networkService: NetworkServiceProtocol = NetworkService(),
+       gifsUseCase: GifsUseCaseProtocol = GifsUseCase()) {
     self.networkService = networkService
+    self.gifsUseCase = gifsUseCase
   }
   
-  func getTrending(completion: @escaping (Result<[GifDTO], UseCaseError>) -> Void) {
+  // MARK: - Functions
+  func getTrending(completion: @escaping (Result<[LibraryGifModel], UseCaseError>) -> Void) {
     networkService.request(TrendingGifsDataRequest()) { response in
+      let favoriteGifIDList = self.gifsUseCase.getFavoriteGifIDList()
       DispatchQueue.main.async {
         switch response {
         case .success(let giphyResponse):
           let trendingGifs: [GifDTO] = giphyResponse.data
-          completion(.success(trendingGifs))
+          let gifs = trendingGifs.map { gifDTO in
+            return LibraryGifModel(
+              id: gifDTO.id,
+              title: gifDTO.title,
+              gifURL: URL(string: gifDTO.images.fixedHeight.url ?? String()),
+              height: Int(gifDTO.images.fixedHeight.height) ?? .zero,
+              width: Int(gifDTO.images.fixedHeight.width) ?? .zero,
+              isFavorite: favoriteGifIDList.contains(gifDTO.id))
+          }
+          
+          completion(.success(gifs))
         case .failure:
           completion(.failure(.unknown))
         }

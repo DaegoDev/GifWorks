@@ -16,11 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="SZK-el-rVn">
-                                <rect key="frame" x="16" y="60" width="382" height="51"/>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for GIFs" translatesAutoresizingMaskIntoConstraints="NO" id="SZK-el-rVn">
+                                <rect key="frame" x="8" y="60" width="398" height="51"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IEg-bF-jkN">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IEg-bF-jkN">
                                 <rect key="frame" x="8" y="119" width="398" height="735"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
@@ -30,8 +30,8 @@
                         <constraints>
                             <constraint firstItem="IEg-bF-jkN" firstAttribute="top" secondItem="SZK-el-rVn" secondAttribute="bottom" constant="8" id="PSe-FC-ujz"/>
                             <constraint firstItem="SZK-el-rVn" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="16" id="bcW-gB-9HF"/>
-                            <constraint firstItem="SZK-el-rVn" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="cJs-AL-hP9"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="SZK-el-rVn" secondAttribute="trailing" constant="16" id="ef7-gU-Cd3"/>
+                            <constraint firstItem="SZK-el-rVn" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="8" id="cJs-AL-hP9"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="SZK-el-rVn" secondAttribute="trailing" constant="8" id="ef7-gU-Cd3"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="IEg-bF-jkN" secondAttribute="bottom" constant="8" id="tCW-sv-o1Q"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="IEg-bF-jkN" secondAttribute="trailing" constant="8" id="tnF-8h-urg"/>
                             <constraint firstItem="IEg-bF-jkN" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="8" id="ulR-60-g2r"/>

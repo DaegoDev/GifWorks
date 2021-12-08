@@ -8,51 +8,53 @@
 import Foundation
 
 class FavoritePresenter: FavoritePresenterProtocol {
+  // MARK: - Constants
+  private let defaultGifHeight: Int = 200
+  
   // MARK: - Inyectables
   private weak var viewController: FavoriteViewProtocol?
   
-  // MARK: - Models
-  private var gifsModel: [LibraryGifViewModel] = []
-
   // MARK: - UseCases
-  private let trendingGifsUseCase: TrendingGifsUseCase = TrendingGifsUseCase()
-  private let gifsUseCase: GifsUseCase = GifsUseCase()
+  private let gifsUseCase: GifsUseCaseProtocol
     
+  // MARK: - Models
+  private var gifsModel: [FavoriteGifModel] = []
+  private var favoriteGifs: [String] = []
+
   // MARK: Init
   init(
     viewController: FavoriteViewProtocol,
-    gifsUseCase: GifsUseCase) {
+    gifsUseCase: GifsUseCaseProtocol = GifsUseCase()) {
     self.viewController = viewController
+    self.gifsUseCase = gifsUseCase
   }
   
-  func viewDidLoad() {
-    trendingGifsUseCase.getTrending { result in
-      switch result {
-      case .success(let gifs):
-        self.gifsModel = gifs.map({ gifDTO in
-          return LibraryGifViewModel(
-            title: gifDTO.title,
-            gifURL: URL(string: gifDTO.images.fixedHeight.url ?? String()),
-            height: Int(gifDTO.images.fixedHeight.height) ?? .zero,
-            width: Int(gifDTO.images.fixedHeight.width) ?? .zero,
-            isFavorite: false)
-        })
-        self.viewController?.reloadData()
-      case .failure:
-        self.viewController?.showError()
-      }
-    }
+  // MARK: - Functions
+  func loadFavoriteGifs() {
+    gifsUseCase.getFavoriteGifs(completion: { gifs in
+      self.gifsModel = gifs
+      self.viewController?.reloadData()
+    })
+  }
+  
+  func deleteFavorite(with id: String) {
+    guard let gifIndex = gifsModel.firstIndex(where: { favoriteGif in
+      favoriteGif.id == id
+    }) else { return }
+    gifsUseCase.deleteFavoriteGif(gifID: id)
+    gifsModel.remove(at: gifIndex)
+    self.viewController?.deleteItem(at: gifIndex)
   }
   
   func getGifCount() -> Int {
     return gifsModel.count
   }
   
-  func getGif(at row: Int) -> LibraryGifViewModel {
+  func getGif(at row: Int) -> FavoriteGifModel {
     return gifsModel[row]
   }
   
   func getGifHeight(at row: Int) -> Int {
-    return gifsModel[row].height
+    return defaultGifHeight
   }
 }

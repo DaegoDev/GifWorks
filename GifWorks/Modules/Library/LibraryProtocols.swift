@@ -18,10 +18,10 @@ protocol LibraryViewProtocol: AnyObject {
 }
 
 protocol LibraryPresenterProtocol {
-  func viewDidLoad()
+  func loadGifs()
   func searchGifs(with string: String)
   func getGifCount() -> Int
-  func getGif(at row: Int) -> LibraryGifViewModel
+  func getGif(at row: Int) -> LibraryGifModel
   func getGifHeight(at row: Int) -> Int
   func toggleFavoriteGif(at row: Int)
 }

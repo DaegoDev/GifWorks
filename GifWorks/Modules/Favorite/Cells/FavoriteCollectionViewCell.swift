@@ -6,16 +6,28 @@
 //
 
 import UIKit
-import SwiftyGif
 
 class FavoriteCollectionViewCell: UICollectionViewCell {
-  
+  // MARK: - IBOutlets
+  @IBOutlet weak var favoriteButton: UIButton!
   @IBOutlet weak var gifImageView: UIImageView!
   
-  func configure(with model: LibraryGifViewModel) {
-    guard let gifURL = model.gifURL else { return }
+  // MARK: - Properties
+  var favoriteCompletion: (() -> Void)?
+  
+  // MARK: - Overrides
+  override func prepareForReuse() {
+    gifImageView.image = nil
+  }
+  
+  // MARK: - IBActions
+  @IBAction func favoriteButtonTapped(_ sender: UIButton) {
+    favoriteCompletion?()
+  }
+  
+  // MARK: - Functions
+  func configure(with model: FavoriteGifModel) {
     gifImageView.contentMode = .scaleToFill
-    gifImageView.setGifFromURL(gifURL)
-
+    gifImageView.loadGif(using: model.data)
   }
 }

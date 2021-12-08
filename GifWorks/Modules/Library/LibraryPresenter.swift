@@ -12,55 +12,35 @@ class LibraryPresenter: LibraryPresenterProtocol {
   private weak var viewController: LibraryViewProtocol?
   
   // MARK: - UseCases
-  private let trendingGifsUseCase: TrendingGifsUseCase
-  private let gifsUseCase: GifsUseCase
+  private let trendingGifsUseCase: TrendingGifsUseCaseProtocol
+  private let gifsUseCase: GifsUseCaseProtocol
   
   // MARK: - Models
-  private var gifsModel: [LibraryGifViewModel] = []
+  private var gifsModel: [LibraryGifModel] = []
+  private var favoriteGifIDList: [String] = []
   
-  // MARK: Init
+  // MARK: - Init
   init(
     viewController: LibraryViewProtocol,
-    trendingGifsUseCase: TrendingGifsUseCase,
-    gifsUseCase: GifsUseCase) {
+    trendingGifsUseCase: TrendingGifsUseCaseProtocol,
+    gifsUseCase: GifsUseCaseProtocol) {
     self.viewController = viewController
     self.trendingGifsUseCase = trendingGifsUseCase
     self.gifsUseCase = gifsUseCase
   }
   
-  func viewDidLoad() {
-    trendingGifsUseCase.getTrending { result in
-      switch result {
-      case .success(let gifs):
-        self.gifsModel = gifs.map({ gifDTO in
-          return LibraryGifViewModel(
-            title: gifDTO.title,
-            gifURL: URL(string: gifDTO.images.fixedHeight.url ?? String()),
-            height: Int(gifDTO.images.fixedHeight.height) ?? .zero,
-            width: Int(gifDTO.images.fixedHeight.width) ?? .zero,
-            isFavorite: false)
-        })
-        self.viewController?.reloadData()
-      case .failure:
-        self.viewController?.showError()
-      }
-    }
+  // MARK: - Functions
+  func loadGifs() {
+    updateFavoriteGifs()
+    loadTrendingGifs()
   }
   
   func searchGifs(with string: String) {
-    gifsModel = []
-    self.viewController?.reloadData()
+    cleanData()
     gifsUseCase.search(string: string) { result in
       switch result {
       case .success(let gifs):
-        self.gifsModel = gifs.map({ gifDTO in
-          return LibraryGifViewModel(
-            title: gifDTO.title,
-            gifURL: URL(string: gifDTO.images.fixedHeight.url ?? String()),
-            height: Int(gifDTO.images.fixedHeight.height) ?? .zero,
-            width: Int(gifDTO.images.fixedHeight.width) ?? .zero,
-            isFavorite: false)
-        })
+        self.gifsModel = gifs
         self.viewController?.reloadData()
       case .failure:
         self.viewController?.showError()
@@ -69,19 +49,48 @@ class LibraryPresenter: LibraryPresenterProtocol {
   }
   
   func toggleFavoriteGif(at row: Int) {
+    let gifID: String = gifsModel[row].id
     gifsModel[row].isFavorite.toggle()
+    if gifsModel[row].isFavorite {
+      guard let gifURL = gifsModel[row].gifURL,
+            let data = gifsUseCase.getDataForGif(gifURL) else { return }
+      gifsUseCase.saveFavoriteGif(data, gifID: gifID)
+    } else {
+      gifsUseCase.deleteFavoriteGif(gifID: gifID)
+    }
   }
-
   
   func getGifCount() -> Int {
     return gifsModel.count
   }
   
-  func getGif(at row: Int) -> LibraryGifViewModel {
+  func getGif(at row: Int) -> LibraryGifModel {
     return gifsModel[row]
   }
   
   func getGifHeight(at row: Int) -> Int {
     return gifsModel[row].height
+  }
+  
+  // MARK: - Helpers
+  private func cleanData() {
+    gifsModel = []
+    self.viewController?.reloadData()
+  }
+  
+  private func loadTrendingGifs() {
+    trendingGifsUseCase.getTrending { result in
+      switch result {
+      case .success(let gifs):
+        self.gifsModel = gifs
+        self.viewController?.reloadData()
+      case .failure:
+        self.viewController?.showError()
+      }
+    }
+  }
+  
+  private func updateFavoriteGifs() {
+    favoriteGifIDList = gifsUseCase.getFavoriteGifIDList()
   }
 }

@@ -8,13 +8,16 @@
 import UIKit
 
 class DashboardViewController: UITabBarController, DashboardViewProtocol {
+  // MARK: - Properties
   var configurator: DashboardConfiguratorProtocol = DashboardConfigurator()
 
+  // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
     configurator.configure(dashboardViewController: self)
   }
   
+  // MARK: - Functions
   func configureTabs(with model: [DashboardViewModel]) {
     let viewControllers: [UIViewController] = model.map { viewModel in
       viewModel.viewController.tabBarItem = UITabBarItem(title: "", image: viewModel.tabIcon, selectedImage: nil)
